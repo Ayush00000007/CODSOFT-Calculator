@@ -1,41 +1,29 @@
-let currentResult = "0";
 
-function updateResult() {
-    document.getElementById('result').innerText = currentResult;
+let displayValue = "";
+
+function appendToDisplay(value) {
+    displayValue += value;
+    document.getElementById("display").innerText = displayValue;
 }
 
-function appendToResult(value) {
-    if (currentResult === "0" && value !== ".") {
-        currentResult = value;
-    } else {
-        currentResult += value;
-    }
-    updateResult();
-}
-
-function clearResult() {
-    currentResult = "0";
-    updateResult();
+function clearDisplay() {
+    displayValue = "";
+    document.getElementById("display").innerText = displayValue;
 }
 
 function calculateResult() {
     try {
-        currentResult = eval(currentResult);
-        updateResult();
+        displayValue = eval(displayValue);
+        document.getElementById("display").innerText = displayValue;
     } catch (error) {
-        currentResult = "Error";
-        updateResult();
+        document.getElementById("display").innerText = "Error";
+        setTimeout(clearDisplay, 1000);
     }
 }
 
-function squareRoot() {
-    currentResult = Math.sqrt(currentResult);
-    updateResult();
-}
-
 function square() {
-    currentResult = Math.pow(currentResult, 2);
-    updateResult();
+    displayValue = Math.pow(currentResult, 2);
+    document.getElementById("display").innerText = displayValue;
 }
 
 function exponentiation() {
@@ -43,21 +31,66 @@ function exponentiation() {
     updateResult();
 }
 
-function sine() {
-    currentResult = Math.sin(currentResult);
-    updateResult();
+function squareRoot() {
+    displayValue = Math.sqrt(eval(displayValue));
+    document.getElementById("display").innerText = displayValue;
 }
 
-function cosine() {
-    currentResult = Math.cos(currentResult);
-    updateResult();
-}
-
-function tangent() {
-    currentResult = Math.tan(currentResult);
-    updateResult();
+function calculateExponentiation() {
+    displayValue = Math.pow(eval(displayValue), 2);
+    document.getElementById("display").innerText = displayValue;
 }
 
 function backspace() {
-    currentResult = currentResult.slice(0, -1);
+    displayValue = displayValue.slice(0, -1);
+    document.getElementById("display").innerText = displayValue;
 }
+
+function evaluateFunction() {
+    try {
+        displayValue = eval(displayValue);
+        document.getElementById("display").innerText = displayValue;
+    } catch (error) {
+        document.getElementById("display").innerText = "Error";
+        setTimeout(clearDisplay, 1000);
+    }
+}
+
+document.addEventListener("keydown", function (event) {
+    if (event.key >= "0" && event.key <= "9") {
+        appendToDisplay(event.key);
+    } else if (
+        event.key === "+" ||
+        event.key === "-" ||
+        event.key === "*" ||
+        event.key === "/"
+    ) {
+        appendToDisplay(event.key);
+    } else if (event.key === ".") {
+        appendToDisplay(event.key);
+    } else if (event.key === "Enter") {
+        evaluateFunction();
+    } else if (event.key === "Escape") {
+        clearDisplay();
+    } else if (event.key === "Backspace") {
+        backspace();
+    } else if (event.key === "^") {
+        appendToDisplay("**");
+    } else if (event.key === "t") {
+        appendToDisplay("Math.tan(");
+    } else if (event.key === "l") {
+        appendToDisplay("Math.log(");
+    } else if (event.key === "s") {
+        appendToDisplay("Math.sin(");
+    } else if (event.key === "c") {
+        appendToDisplay("Math.cos(");
+    } else if (event.key === "p") {
+        appendToDisplay("Math.PI");
+    } else if (event.key === "e") {
+        appendToDisplay("Math.E");
+    } else if (event.key === "(") {
+        appendToDisplay("(");
+    } else if (event.key === ")") {
+        appendToDisplay(")");
+    }
+});
